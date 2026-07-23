@@ -1,12 +1,13 @@
-# HOS Engine Constants (49 CFR Part 395)
+# HOS Engine Constants (49 CFR Part 395 & FMCSA Driver's Guide to HOS)
 
-MAX_DRIVE_HOURS = 11.0
-MAX_WINDOW_HOURS = 14.0
-BREAK_AFTER_HOURS = 8.0  # cumulative driving before 30-min break required
-BREAK_DURATION = 0.5     # hours (30 mins)
-CYCLE_MAX_HOURS = 70.0   # 70-hr / 8-day cycle limit
-RESTART_HOURS = 34.0     # hours off-duty for full cycle restart
-REST_HOURS = 10.0        # hours off-duty mandatory reset
-FUEL_INTERVAL_MILES = 1000.0  # fuel stop inserted at least every 1000 driven miles
-FUEL_DURATION = 0.5      # hours (30 mins) on-duty not driving
-PICKUP_DROPOFF_HOURS = 1.0  # 1 hour on-duty at pickup and dropoff
+MAX_DRIVE_HOURS = 11  # FMCSA Guide Section "11-Hour Driving Limit": Max 11 hours driving after 10 consecutive hours off-duty (49 CFR § 395.3(a)(1))
+MAX_WINDOW_HOURS = 14  # FMCSA Guide Section "14-Hour Driving Window": Cannot drive beyond 14th consecutive hour after coming on duty (49 CFR § 395.3(a)(2))
+BREAK_AFTER_HOURS = 8  # FMCSA Guide Section "30-Minute Rest Break": Requires break after 8 cumulative hours of driving without 30-min interruption (49 CFR § 395.3(a)(3)(ii))
+BREAK_DURATION = 0.5  # FMCSA Guide Section "30-Minute Rest Break": Mandatory rest break duration of at least 30 consecutive minutes (49 CFR § 395.3(a)(3)(ii))
+CYCLE_MAX_HOURS = 70  # FMCSA Guide Section "60/70-Hour Duty Limit": Cannot drive after 70 hours on-duty in 8 consecutive days (49 CFR § 395.3(b)(2))
+RESTART_HOURS = 34  # FMCSA Guide Section "34-Hour Restart": Any 70-hr cycle resets after 34 consecutive hours off-duty (49 CFR § 395.3(d))
+FUEL_INTERVAL_MILES = 1000  # FMCSA Assessment Brief / TRD §4: Mandatory fuel stop inserted at least every 1,000 driven miles
+PICKUP_DROPOFF_HOURS = 1  # FMCSA Assessment Brief / TRD §4: Mandatory 1-hour on-duty time allocated at pickup and dropoff
+
+REST_HOURS = 10  # FMCSA Guide Section "11-Hour Driving Limit": Mandatory 10 consecutive hours off-duty reset (49 CFR § 395.3(a)(1))
+FUEL_DURATION = 0.5  # FMCSA Assessment Brief / TRD §4: Duration of 30 minutes on-duty for fuel stop
