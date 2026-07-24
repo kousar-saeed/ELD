@@ -9,7 +9,50 @@ Reference: FMCSA Driver's Guide to HOS (2022)
 import unittest
 from datetime import datetime
 
-from hos.engine import plan_hos_trip, _compile_daily_logs, Segment, D, ON, OFF, SB
+from hos.engine import plan_hos_trip, plan_trip, RouteLeg, _compile_daily_logs, Segment, D, ON, OFF, SB, DutySegment, Stop
+
+
+class TestPlanTripDirect(unittest.TestCase):
+    """Test plan_trip(leg1, leg2, current_cycle_used) returning (list[DutySegment], list[Stop])."""
+
+    def test_plan_trip_with_route_leg_dataclass(self):
+        leg1 = RouteLeg(
+            distance_miles=180.0,
+            duration_hours=3.0,
+            start_lat=41.8781,
+            start_lng=-87.6298,
+            end_lat=39.7684,
+            end_lng=-86.1581,
+            start_label="Chicago, IL",
+            end_label="Indianapolis, IN",
+        )
+        leg2 = RouteLeg(
+            distance_miles=175.0,
+            duration_hours=2.8,
+            start_lat=39.7684,
+            start_lng=-86.1581,
+            end_lat=39.9612,
+            end_lng=-82.9988,
+            start_label="Indianapolis, IN",
+            end_label="Columbus, OH",
+        )
+
+        segments, stops = plan_trip(leg1, leg2, current_cycle_used=10.0, start_time=datetime(2026, 7, 22, 6, 0))
+
+        self.assertIsInstance(segments, list)
+        self.assertIsInstance(stops, list)
+        self.assertTrue(all(isinstance(s, DutySegment) for s in segments))
+        self.assertTrue(all(isinstance(s, Stop) for s in stops))
+
+        # Check pickup and dropoff stops exist
+        pickup_stops = [s for s in stops if s.type == "pickup"]
+        dropoff_stops = [s for s in stops if s.type == "dropoff"]
+        self.assertEqual(len(pickup_stops), 1)
+        self.assertEqual(len(dropoff_stops), 1)
+
+
+if __name__ == "__main__":
+    unittest.main()
 
 
 class TestJohnDoeExample(unittest.TestCase):
