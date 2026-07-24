@@ -39,70 +39,7 @@ ON  = "ON"    # On-Duty (Not Driving)
 _EPS = 1e-9
 
 
-# =====================================================================
-# Data classes
-# =====================================================================
-
-class Segment:
-    """One contiguous block of a single duty status."""
-
-    __slots__ = ("status", "start", "end", "label")
-
-    def __init__(self, status: str, start: datetime, end: datetime, label: str = ""):
-        self.status = status
-        self.start = start
-        self.end = end
-        self.label = label
-
-    @property
-    def duration_hours(self) -> float:
-        return (self.end - self.start).total_seconds() / 3600.0
-
-    def to_dict(self) -> dict:
-        return {
-            "status": self.status,
-            "start": self.start.isoformat(),
-            "end": self.end.isoformat(),
-            "label": self.label,
-        }
-
-    def __repr__(self):
-        hrs = self.duration_hours
-        return f"Segment({self.status}, {hrs:.2f}h, {self.label!r})"
-
-
-class Stop:
-    """A location the driver must stop at during the trip."""
-
-    __slots__ = ("type", "lat", "lng", "label", "arrival_time", "departure_time")
-
-    def __init__(
-        self,
-        stop_type: str,
-        lat: float,
-        lng: float,
-        label: str,
-        arrival_time: datetime,
-        departure_time: datetime | None = None,
-    ):
-        self.type = stop_type
-        self.lat = lat
-        self.lng = lng
-        self.label = label
-        self.arrival_time = arrival_time
-        self.departure_time = departure_time
-
-    def to_dict(self) -> dict:
-        d: dict[str, Any] = {
-            "type": self.type,
-            "lat": self.lat,
-            "lng": self.lng,
-            "label": self.label,
-            "arrival_time": self.arrival_time.isoformat(),
-        }
-        if self.departure_time:
-            d["departure_time"] = self.departure_time.isoformat()
-        return d
+from .models import DutySegment, Segment, Stop, DailyLog
 
 
 # =====================================================================
